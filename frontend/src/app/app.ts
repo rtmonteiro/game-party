@@ -22,6 +22,13 @@ export class App implements OnDestroy {
   scoreboard: Array<{ name: string; score: number }> = [];
   round: any = null;
 
+  // admin UI
+  adminMode = false;
+  adminItem = '';
+  adminAnswer = '';
+  adminHints = '';
+  adminMaxPhases = 3;
+
   private strokes: Stroke[] = [];
   private drawing = false;
   private activePoints: { x: number; y: number }[] = [];
@@ -173,5 +180,37 @@ export class App implements OnDestroy {
       this.fetchScoreboard();
       this.fetchState();
     }, 1000);
+  }
+
+  async startRound() {
+    try {
+      const hints = this.adminHints.split('\n').map((s) => s.trim()).filter(Boolean);
+      const body = { item: this.adminItem, answer: this.adminAnswer, hints, maxPhases: this.adminMaxPhases };
+      const r = await fetch('/api/start-round', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const j = await r.json();
+      if (r.ok) {
+        this.round = j.round;
+        alert('Round started');
+      } else {
+        alert(j.error || 'start failed');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async nextPhase() {
+    try {
+      const r = await fetch('/api/next-phase', { method: 'POST' });
+      const j = await r.json();
+      if (r.ok) {
+        this.round = j.round;
+        alert('Advanced to next phase');
+      } else {
+        alert(j.error || 'next phase failed');
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 }
