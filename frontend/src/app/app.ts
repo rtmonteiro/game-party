@@ -45,22 +45,24 @@ export class App implements OnDestroy, AfterViewInit {
   private activePoints: { x: number; y: number }[] = [];
   private raf = 0;
   private pollInterval?: ReturnType<typeof setInterval>;
+  private boundResizeCanvas = this.resizeCanvas.bind(this);
+  private boundPointerUp = this.onPointerUp.bind(this);
 
   ngAfterViewInit() {
     this.resizeCanvas();
-    window.addEventListener('resize', () => this.resizeCanvas());
+    window.addEventListener('resize', this.boundResizeCanvas);
     const canvas = this.drawRef.nativeElement;
     canvas.addEventListener('pointerdown', (e) => this.onPointerDown(e as PointerEvent));
     canvas.addEventListener('pointermove', (e) => this.onPointerMove(e as PointerEvent));
-    window.addEventListener('pointerup', (e) => this.onPointerUp(e as PointerEvent));
+    window.addEventListener('pointerup', this.boundPointerUp);
     this.raf = requestAnimationFrame(() => this.renderLoop());
     this.startPolling();
   }
 
   ngOnDestroy() {
     cancelAnimationFrame(this.raf);
-    window.removeEventListener('resize', this.resizeCanvas.bind(this));
-    window.removeEventListener('pointerup', this.onPointerUp.bind(this));
+    window.removeEventListener('resize', this.boundResizeCanvas);
+    window.removeEventListener('pointerup', this.boundPointerUp);
     if (this.pollInterval) {
       clearInterval(this.pollInterval);
     }

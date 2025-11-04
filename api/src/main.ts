@@ -119,6 +119,9 @@ app.post('/api/answer', (req, res) => {
       p.score += pts;
       currentRound.finished = true;
       return res.send({ correct: true, points: pts, player: p });
+    } else {
+      // Should never happen after ensurePlayer, but handle gracefully
+      return res.status(500).send({ error: 'failed to retrieve player' });
     }
   }
   // incorrect: remove first from buzzes so next can answer
