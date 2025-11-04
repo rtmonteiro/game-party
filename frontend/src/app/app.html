@@ -1,0 +1,31 @@
+<div class="topbar">
+	<label>
+		Name:
+		<input [(ngModel)]="name" (change)="saveName()" placeholder="Your name" />
+	</label>
+	<div class="scoreboard">
+		<strong>Scoreboard</strong>
+		<div *ngFor="let p of scoreboard">{{p.name}} — {{p.score}}</div>
+	</div>
+</div>
+
+<canvas #draw class="draw-canvas"></canvas>
+
+<div class="hud">
+	<div class="hint">
+		<div *ngIf="round">
+			<div><strong>Item:</strong> {{round.item}}</div>
+			<div><strong>Phase:</strong> {{round.phase}} / {{round.maxPhases}}</div>
+			<div *ngIf="round.hints && round.hints[round.phase - 1]">Hint: {{round.hints[round.phase - 1]}}</div>
+		</div>
+		<div *ngIf="!round">No active round</div>
+	</div>
+
+	<div class="controls">
+		<button (click)="buzz()" class="buzz">Buzz!</button>
+		<div *ngIf="allowedToAnswer" class="answer">
+			<input [(ngModel)]="answerText" placeholder="Your answer" />
+			<button (click)="submitAnswer()">Submit</button>
+		</div>
+	</div>
+</div>

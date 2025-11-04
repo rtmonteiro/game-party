@@ -1,0 +1,13 @@
+:root{
+	--hud-height: 140px;
+}
+html,body { height:100%; margin:0; font-family: system-ui, Arial; }
+.topbar{ position:fixed; left:8px; top:8px; z-index:40; background:rgba(0,0,0,0.4); color:#fff; padding:8px; border-radius:8px; }
+.topbar input{ margin-left:6px; padding:4px; }
+.scoreboard{ margin-top:8px; font-size:14px; }
+.draw-canvas{ position:fixed; left:0; top:0; z-index:1; touch-action: none; }
+.hud{ position:fixed; left:0; right:0; bottom:0; height:var(--hud-height); z-index:50; display:flex; align-items:center; justify-content:space-between; padding:12px; background:linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.15)); color:#fff; }
+.hud .hint{ margin-left:16px; }
+.controls{ margin-right:16px; display:flex; align-items:center; gap:12px; }
+.buzz{ background:#ffcc33; border:none; padding:16px 28px; border-radius:999px; font-size:20px; }
+.answer input{ padding:8px; }
