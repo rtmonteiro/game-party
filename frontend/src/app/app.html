@@ -3,9 +3,28 @@
 		Name:
 		<input [(ngModel)]="name" (change)="saveName()" placeholder="Your name" />
 	</label>
+	<label style="margin-left:12px;">
+		<input type="checkbox" [(ngModel)]="adminMode" /> Admin
+	</label>
 	<div class="scoreboard">
 		<strong>Scoreboard</strong>
 		<div *ngFor="let p of scoreboard">{{p.name}} — {{p.score}}</div>
+	</div>
+
+	<div *ngIf="adminMode" class="admin" style="margin-top:8px;">
+		<h4>Admin controls</h4>
+		<div>
+			<input [(ngModel)]="adminItem" placeholder="Item to guess (visible)" style="width:220px;" />
+			<input [(ngModel)]="adminAnswer" placeholder="Answer (hidden)" style="width:180px; margin-left:8px;" />
+		</div>
+		<div style="margin-top:6px;">
+			<textarea [(ngModel)]="adminHints" placeholder="Hints (one per line)" rows="3" style="width:420px"></textarea>
+		</div>
+		<div style="margin-top:6px; display:flex; gap:8px; align-items:center;">
+			<label>Max phases: <input type="number" [(ngModel)]="adminMaxPhases" min="1" max="10" style="width:60px; margin-left:6px;" /></label>
+			<button (click)="startRound()">Start Round</button>
+			<button (click)="nextPhase()">Next Phase</button>
+		</div>
 	</div>
 </div>
 

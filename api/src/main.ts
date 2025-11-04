@@ -114,10 +114,15 @@ app.post('/api/answer', (req, res) => {
   if (correct) {
     const pts = pointsForPhase(currentRound.phase);
     ensurePlayer(name);
-    const p = players.get(name)!;
-    p.score += pts;
-    currentRound.finished = true;
-    return res.send({ correct: true, points: pts, player: p });
+    const p = players.get(name);
+    if (p) {
+      p.score += pts;
+      currentRound.finished = true;
+      return res.send({ correct: true, points: pts, player: p });
+    } else {
+      // Should never happen after ensurePlayer, but handle gracefully
+      return res.status(500).send({ error: 'failed to retrieve player' });
+    }
   }
   // incorrect: remove first from buzzes so next can answer
   currentRound.buzzes.shift();
